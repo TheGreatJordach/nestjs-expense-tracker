@@ -48,31 +48,83 @@ Here are some constraints that you should follow:
 
 ### SOLUTION
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg)](https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker)
+
+<p align="center">
+
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=coverage)](https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=bugs)](https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker)
+
+</p>
+
 #### Data Model
 
 For an expense tracker, the data model for the Expense entity should capture all the necessary details for an expense entry, such as the user who made the expense, the amount, category, date, and any additional notes. It should also support filtering and allow for updating and deleting records.
 
-**1. Expense Entity Data Model**
+**1. User Entity Data Model**
 
 ```typescript
-class Expense {
-  id: string; // Unique identifier (UUID or auto-incremented)
-  userId: string; // Foreign key to associate the expense with a specific user
-  amount: number; // The monetary value of the expense
-  category: ExpenseCategory; // Enum for expense category (e.g., Groceries, Leisure)
-  description: string; // Additional information or notes about the expense
-  date: Date; // Date when the expense was made
-  createdAt: Date; // Timestamp for when the expense record was created
-  updatedAt: Date; // Timestamp for when the expense record was last updated
+@Entity("users")
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
+  @Column()
+  firstName: string;
+  @Column()
+  lastName?: string;
+  @Column({ unique: true })
+  email: Email;
+  @Column()
+  password: string;
+  @OneToMany(() => Expense, (expense) => expense.user)
+  expenses: Expense[];
+}
+```
+**2. Expense Entity Data Model**
+```typescript
+@Entity("expenses")
+export class Expense {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ type: "bigint" }) // Use bigint for amount stored in minor units (e.g., cents)
+  amount: number;
+  @Column({ type: "varchar", length: 3 }) // Store currency as a 3-letter code (ISO 4217)
+  currency: string;
+  @Column({
+    type: "enum",
+    enum: ExpenseCategoryEnum,
+    default: ExpenseCategoryEnum.OTHERS,
+  })
+  category: ExpenseCategoryEnum;
+  @Column()
+  description: string;
+  @Column({ type: Date })
+  date: Date;
+  @ManyToOne(() => User, (user) => user.expenses)
+  user: User;
+
+  @CreateDateColumn()
+  createdAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
 ```
 
-**2. ExpenseCategory Enum**
+**3. ExpenseCategoryEnum Enum**
 
 To represent the fixed list of categories:
 
 ```typescript
-enum ExpenseCategory {
+enum ExpenseCategoryEnum {
   GROCERIES = "Groceries",
   LEISURE = "Leisure",
   ELECTRONICS = "Electronics",
@@ -80,6 +132,24 @@ enum ExpenseCategory {
   CLOTHING = "Clothing",
   HEALTH = "Health",
   OTHERS = "Others",
+}
+```
+
+Types definition
+
+**Email Type Definition**
+
+```typescript
+//src/common/types/email.type.ts
+export type Email = string & { readonly brand: unique symbol };
+
+// src/common/util/email.util.ts
+export function validateEmail(email: string): Email {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex pattern
+  if (!emailPattern.test(email)) {
+    throw new BadRequestException(`Invalid email format ${email}`);
+  }
+  return email as Email; // Cast to an Email type
 }
 ```
 
