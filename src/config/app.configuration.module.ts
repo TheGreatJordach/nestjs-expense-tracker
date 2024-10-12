@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { EnvValidation } from "./env/validateEnvironment";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { dataSourceFactory, getDatabaseConfig } from "./db/db.config";
 
 @Module({
   imports: [
@@ -9,6 +11,12 @@ import { EnvValidation } from "./env/validateEnvironment";
       envFilePath: ".env",
       cache: true,
       validate: EnvValidation,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getDatabaseConfig,
+      dataSourceFactory: dataSourceFactory,
     }),
   ],
 })
