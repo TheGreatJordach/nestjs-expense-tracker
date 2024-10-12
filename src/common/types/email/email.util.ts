@@ -9,7 +9,8 @@ import { Email } from "./email.type";
  * @throws BadRequestException if the email address format is invalid.
  */
 export function validateEmail(email: string): Email {
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex pattern
+  // More efficient email validation regex to avoid potential ReDoS vulnerability
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailPattern.test(email)) {
     throw new BadRequestException(`Invalid email format ${email}`);
   }

@@ -1,0 +1,346 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>nestjs-expense-tracker documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">nestjs-expense-tracker documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content getting-started">
+                   <div class="content-data">
+
+<p align="center">
+  <img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" />
+  <img src="project/images/meilisearch.svg" width="200" alt="Nest Logo" />
+  <img src="project/images/jwt-token.png" width="348" alt="Nest Logo" />
+  
+</p>
+
+<h1>Build an API for an expense tracker application.</h1>
+<blockquote>
+<p>Roadmap.sh project link &gt; <a href="https://roadmap.sh/projects/expense-tracker-api">https://roadmap.sh/projects/expense-tracker-api</a> </p>
+</blockquote>
+<p>Build an API for an expense tracker application. <strong>This API should allow users to create, read, update, and delete expenses.</strong> <strong>Users should be able to sign up and log in to the application. Each user should have their own set of expenses.</strong></p>
+<p align="center">
+ <img src="project/images/expense-tracker-api-m72p5.png" width="1932" alt="Nest Logo" />
+</p>
+
+<blockquote>
+<p>Features
+Here are the features that you should implement in your Expense Tracker API:</p>
+</blockquote>
+<ul>
+<li>Sign up as a new user.</li>
+<li>Generate and validate JWTs for handling authentication and user session.</li>
+<li>List and filter your past expenses. You can add the following filters:<ul>
+<li>Past week</li>
+<li>Past month</li>
+<li>Last 3 months</li>
+<li>Custom (to specify a start and end date of your choosing).</li>
+</ul>
+</li>
+<li>Add a new expense</li>
+<li>Remove existing expenses</li>
+<li>Update existing expenses</li>
+</ul>
+<blockquote>
+<p>Constraints
+You can use any programming language and framework of your choice. You can use a database of your choice to store the data. You can use any ORM or database library to interact with the database.</p>
+</blockquote>
+<p>Here are some constraints that you should follow:</p>
+<ul>
+<li>You’ll be using JWT (JSON Web Token) to protect the endpoints and to identify the requester.</li>
+<li>For the different expense categories, you can use the following list (feel free to decide how to implement this as part of your data model):<ul>
+<li>Groceries</li>
+<li>Leisure</li>
+<li>Electronics</li>
+<li>Utilities</li>
+<li>Clothing</li>
+<li>Health</li>
+<li>Others</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>SOLUTION</h3>
+<p><a href="https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker"><img src="https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg" alt="SonarCloud" class="img-responsive"></a></p>
+<p align="center">
+
+<p><a href="https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker"><img src="https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=ncloc" alt="Lines of Code" class="img-responsive"></a>
+<a href="https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker"><img src="https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=vulnerabilities" alt="Vulnerabilities" class="img-responsive"></a>
+<a href="https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker"><img src="https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=security_rating" alt="Security Rating" class="img-responsive"></a>
+<a href="https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker"><img src="https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=sqale_index" alt="Technical Debt" class="img-responsive"></a>
+<a href="https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker"><img src="https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=reliability_rating" alt="Reliability Rating" class="img-responsive"></a>
+<a href="https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker"><img src="https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=coverage" alt="Coverage" class="img-responsive"></a>
+<a href="https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker"><img src="https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=sqale_rating" alt="Maintainability Rating" class="img-responsive"></a>
+<a href="https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker"><img src="https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=bugs" alt="Bugs" class="img-responsive"></a>
+<a href="https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker"><img src="https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=alert_status" alt="Quality Gate Status" class="img-responsive"></a>
+<a href="https://sonarcloud.io/summary/new_code?id=TheGreatJordach_nestjs-expense-tracker"><img src="https://sonarcloud.io/api/project_badges/measure?project=TheGreatJordach_nestjs-expense-tracker&metric=duplicated_lines_density" alt="Duplicated Lines (%)" class="img-responsive"></a></p>
+</p>
+
+<h4>Data Model</h4>
+<p>For an expense tracker, the data model for the Expense entity should capture all the necessary details for an expense entry, such as the user who made the expense, the amount, category, date, and any additional notes. It should also support filtering and allow for updating and deleting records.</p>
+<p><strong>1. User Entity Data Model</strong></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">&#64;Entity(&quot;users&quot;)
+export class User {
+  &#64;PrimaryGeneratedColumn()
+  id: number;
+  &#64;Column()
+  firstName: string;
+  &#64;Column()
+  lastName?: string;
+  &#64;Column({ unique: true })
+  email: Email;
+  &#64;Column()
+  password: string;
+  &#64;OneToMany(() =&gt; Expense, (expense) =&gt; expense.user)
+  expenses: Expense[];
+}</code></pre></div><p><strong>2. Expense Entity Data Model</strong></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">&#64;Entity(&quot;expenses&quot;)
+export class Expense {
+  &#64;PrimaryGeneratedColumn()
+  id: number;
+
+  &#64;Column({ type: &quot;bigint&quot; }) // Use bigint for amount stored in minor units (e.g., cents)
+  amount: number;
+  &#64;Column({ type: &quot;varchar&quot;, length: 3 }) // Store currency as a 3-letter code (ISO 4217)
+  currency: string;
+  &#64;Column({
+    type: &quot;enum&quot;,
+    enum: ExpenseCategoryEnum,
+    default: ExpenseCategoryEnum.OTHERS,
+  })
+  category: ExpenseCategoryEnum;
+  &#64;Column()
+  description: string;
+  &#64;Column({ type: Date })
+  date: Date;
+  &#64;ManyToOne(() =&gt; User, (user) =&gt; user.expenses)
+  user: User;
+
+  &#64;CreateDateColumn()
+  createdAt: Date;
+  &#64;UpdateDateColumn()
+  updatedAt: Date;
+}</code></pre></div><p><strong>3. ExpenseCategoryEnum Enum</strong></p>
+<p>To represent the fixed list of categories:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">enum ExpenseCategoryEnum {
+  GROCERIES = &quot;Groceries&quot;,
+  LEISURE = &quot;Leisure&quot;,
+  ELECTRONICS = &quot;Electronics&quot;,
+  UTILITIES = &quot;Utilities&quot;,
+  CLOTHING = &quot;Clothing&quot;,
+  HEALTH = &quot;Health&quot;,
+  OTHERS = &quot;Others&quot;,
+}</code></pre></div><p>Types definition</p>
+<p><strong>Email Type Definition</strong></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">//src/common/types/email.type.ts
+export type Email = string &amp; { readonly brand: unique symbol };
+
+// src/common/util/email.util.ts
+export function validateEmail(email: string): Email {
+  const emailPattern = /^[^\s&#64;]+&#64;[^\s&#64;]+\.[^\s&#64;]+$/; // Basic email regex pattern
+  if (!emailPattern.test(email)) {
+    throw new BadRequestException(`Invalid email format ${email}`);
+  }
+  return email as Email; // Cast to an Email type
+}</code></pre></div>  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+ src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+
+<h2>Description</h2>
+<p><a href="https://roadmap.sh/projects/expense-tracker-api">RoadMap.sh</a> Project description.</p>
+<h2>Installation</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">$ yarn install</code></pre></div><h2>Running the app</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># development
+$ yarn run start
+
+# watch mode
+$ yarn run start:dev
+
+# production mode
+$ yarn run start:prod</code></pre></div><h2>Test</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># unit tests
+$ yarn run test
+
+# e2e tests
+$ yarn run test:e2e
+
+# test coverage
+$ yarn run test:cov</code></pre></div><h2>Support</h2>
+<p>Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you&#39;d like to join them, please <a href="https://docs.nestjs.com/support">read more here</a>.</p>
+<h2>Stay in touch</h2>
+<ul>
+<li>Author - <a href="https://kamilmysliwiec.com">Jordach Makaya</a></li>
+<li>Linkedin - <a href="https://www.linkedin.com/in/jordachmakaya/">jordachmakaya</a></li>
+<li>WakaTime - <a href="https://wakatime.com/@jordach">@jordach</a></li>
+</ul>
+<h2>License</h2>
+<p>Nest is <a href="LICENSE">MIT licensed</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
+            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+       <script src="./js/libs/zepto.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
