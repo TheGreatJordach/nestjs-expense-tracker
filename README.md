@@ -1,13 +1,19 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  <img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" />
+  <img src="project/images/meilisearch.svg" width="200" alt="Nest Logo" />
+  <img src="project/images/jwt-token.png" width="348" alt="Nest Logo" />
+  
 </p>
 
 # Build an API for an expense tracker application.
 
-> Roadmap.sh project link > https://roadmap.sh/projects/expense-tracker-api
+> Roadmap.sh project link > https://roadmap.sh/projects/expense-tracker-api 
 
 Build an API for an expense tracker application. **This API should allow users to create, read, update, and delete expenses.** **Users should be able to sign up and log in to the application. Each user should have their own set of expenses.**
+
+<p align="center">
+ <img src="project/images/expense-tracker-api-m72p5.png" width="1932" alt="Nest Logo" />
+</p>
 
 > Features
 > Here are the features that you should implement in your Expense Tracker API:

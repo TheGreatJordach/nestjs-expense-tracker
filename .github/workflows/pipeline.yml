@@ -1,0 +1,131 @@
+name: Project Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - '**/main'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate-env:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check environment variables
+        run: |
+          echo "DATASOURCE_HOST=${{ secrets.env_POSTGRES_HOST }}"
+          echo "DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}"
+          echo "DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}"
+          echo "DATASOURCE_DATABASE=${{ secrets.DATASOURCE_DATABASE }}"
+          # Add more checks as needed
+          # APP
+          echo "APP_PORT=${{ secrets.APP_PORT }}"
+          echo "APP_PREFIX=${{ secrets.APP_PREFIX }}"
+
+          # SWAGGER
+           echo "SWAGGER_PATH=${{ secrets.SWAGGER_PATH }}"
+           echo "SWAGGER_DESC=${{ secrets.SWAGGER_DESC }}"
+           echo "SWAGGER_TITLE=${{ secrets.SWAGGER_TITLE }}"
+           echo "SWAGGER_LICENCE=${{ secrets.SWAGGER_LICENCE }}"
+           echo "SWAGGER_LICENCE_URL=${{ secrets.SWAGGER_LICENCE_URL }}"
+           echo "SWAGGER_SERV=${{ secrets.SWAGGER_SERV }}"
+           echo "SWAGGER_VERSION=${{ secrets.SWAGGER_VERSION }}"
+        env:
+          DATASOURCE_HOST: ${{ secrets.env_POSTGRES_HOST }}
+          DATASOURCE_USERNAME: ${{ secrets.DATASOURCE_USERNAME }}
+          DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD }}
+          DATASOURCE_DATABASE: ${{ secrets.DATASOURCE_DATABASE }}
+          # Add more environment variables here
+          SWAGGER_PATH: ${{ secrets.SWAGGER_PATH }}
+          echo "SWAGGER_DESC: ${{ secrets.SWAGGER_DESC }}
+          SWAGGER_TITLE: ${{ secrets.SWAGGER_TITLE }}
+          SWAGGER_LICENCE: ${{ secrets.SWAGGER_LICENCE }}
+          SWAGGER_LICENCE_URL: ${{ secrets.SWAGGER_LICENCE_URL }}
+          SWAGGER_SERV: ${{ secrets.SWAGGER_SERV }}
+          SWAGGER_VERSION: ${{ secrets.SWAGGER_VERSION }}
+
+  build:
+    runs-on: ubuntu-latest
+    needs: validate-env
+    if : success() # Ensure env variable as loaded
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run unit tests
+        run: yarn run test
+
+      - name: Run e2e tests
+        run: yarn run test:e2e
+
+      - name: Run test coverage
+        run: yarn run test:cov  # Ensure this command runs tests and generates coverage report
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+
+  sonarcloud:
+    runs-on: ubuntu-latest
+    needs: validate-env
+    if: success() # Ensure build is clean
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full depth is recommended for accurate SonarCloud analysis
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Upload coverage to SonarCloud
+        run: |
+          npx sonar-scanner
+        env:
+          SONAR_HOST_URL: https://sonarcloud.io
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  documentation:
+    runs-on: ubuntu-latest
+    needs: sonarcloud
+    if: success() # Ensure build is clean
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Generate documentation
+        run: yarn docs
+
+      - name: Deploy documentation
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+
+
