@@ -1,5 +1,5 @@
 ### Send POST request with json body
-POST http://localhost:3000/api/registration
+POST http://localhost:3001/api/auth/sign-up
 Content-Type: application/json
 
 {
@@ -8,23 +8,21 @@ Content-Type: application/json
 }
 ##################################################################
 ### REGISTRATION
-POST http://localhost:3000/api/sign-up
+POST http://localhost:3001/api/auth/sign-up
 Content-Type: application/json
 
 {
-  "firstName": "Jordach",
+  "firstName": "Samira",
   "lastName": "MAKAYA",
-  "email": "jmakaya@me.com",
+  "email": "sammakaya@me.com",
   "password": "Password@@2026"
 }
 
 ### LOGIN
-POST http://localhost:3000/api/sign-in
+POST http://localhost:3001/api/auth/sign-in
 Content-Type: application/json
 
 {
-  "id": 999,
-  "value": "content",
   "email": "jmakaya@me.com",
   "password": "Password@@2026"
 }

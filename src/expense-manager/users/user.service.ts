@@ -13,7 +13,7 @@ import { validateEmail } from "../../common/types/email/email.util";
 import { UpdateUserDto } from "./dto/update.user.dto";
 
 @Injectable()
-export class UserManagerService {
+export class UserService {
   constructor(private readonly dataSource: DataSource) {}
 
   /**
@@ -25,9 +25,6 @@ export class UserManagerService {
    * @throws InternalServerErrorException if an internal server error occurs during user creation.
    */
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const ifEmailUsed: boolean = await this.ifEmailUsed(createUserDto.email);
-    if (ifEmailUsed) throw new ConflictException("Email already exists");
-
     return this.dataSource.transaction<User>(
       async (transactionEntityManager) => {
         try {
@@ -66,6 +63,7 @@ export class UserManagerService {
         });
         return response > 0;
       } catch (error) {
+        console.log(error.toString());
         throw new InternalServerErrorException("Failed to check if user Exist");
       }
     });

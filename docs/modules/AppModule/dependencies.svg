@@ -22,17 +22,17 @@
 <text text-anchor="start" x="429.73" y="-15.4" font-family="Times-12" font-size="14.00"> &#160;Exports</text>
 <g id="clust1" class="cluster">
 <title>cluster_AppModule</title>
-<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="14,-70 14,-195 482,-195 482,-70 14,-70"/>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="17,-70 17,-195 479,-195 479,-70 17,-70"/>
 </g>
 <g id="clust3" class="cluster">
 <title>cluster_AppModule_imports</title>
-<polygon fill="none" stroke="black" points="22,-78 22,-130 474,-130 474,-78 22,-78"/>
+<polygon fill="none" stroke="black" points="25,-78 25,-130 471,-130 471,-78 25,-78"/>
 </g>
 <!-- AppConfigurationModule -->
 <g id="node1" class="node">
 <title>AppConfigurationModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="466.2,-122 463.2,-126 442.2,-126 439.2,-122 303.8,-122 303.8,-86 466.2,-86 466.2,-122"/>
-<text text-anchor="middle" x="385" y="-99.8" font-family="Times,serif" font-size="14.00">AppConfigurationModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="463.2,-122 460.2,-126 439.2,-126 436.2,-122 300.8,-122 300.8,-86 463.2,-86 463.2,-122"/>
+<text text-anchor="middle" x="382" y="-99.8" font-family="Times,serif" font-size="14.00">AppConfigurationModule</text>
 </g>
 <!-- AppModule -->
 <g id="node4" class="node">
@@ -43,32 +43,32 @@
 <!-- AppConfigurationModule&#45;&gt;AppModule -->
 <g id="edge1" class="edge">
 <title>AppConfigurationModule&#45;&gt;AppModule</title>
-<path fill="none" stroke="black" d="M385,-122.11C385,-141.34 385,-169 385,-169 385,-169 259.95,-169 259.95,-169"/>
-<polygon fill="black" stroke="black" points="259.95,-165.5 249.95,-169 259.95,-172.5 259.95,-165.5"/>
+<path fill="none" stroke="black" d="M382,-122.11C382,-141.34 382,-169 382,-169 382,-169 259.68,-169 259.68,-169"/>
+<polygon fill="black" stroke="black" points="259.68,-165.5 249.68,-169 259.68,-172.5 259.68,-165.5"/>
 </g>
-<!-- ExpenseManagerModule -->
+<!-- ExpenseTrackerModule -->
 <g id="node2" class="node">
-<title>ExpenseManagerModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="286.23,-122 283.23,-126 262.23,-126 259.23,-122 129.77,-122 129.77,-86 286.23,-86 286.23,-122"/>
-<text text-anchor="middle" x="208" y="-99.8" font-family="Times,serif" font-size="14.00">ExpenseManagerModule</text>
+<title>ExpenseTrackerModule</title>
+<polygon fill="#8dd3c7" stroke="black" points="283.49,-122 280.49,-126 259.49,-126 256.49,-122 132.51,-122 132.51,-86 283.49,-86 283.49,-122"/>
+<text text-anchor="middle" x="208" y="-99.8" font-family="Times,serif" font-size="14.00">ExpenseTrackerModule</text>
 </g>
-<!-- ExpenseManagerModule&#45;&gt;AppModule -->
+<!-- ExpenseTrackerModule&#45;&gt;AppModule -->
 <g id="edge2" class="edge">
-<title>ExpenseManagerModule&#45;&gt;AppModule</title>
+<title>ExpenseTrackerModule&#45;&gt;AppModule</title>
 <path fill="none" stroke="black" d="M208,-122.11C208,-122.11 208,-140.99 208,-140.99"/>
 <polygon fill="black" stroke="black" points="204.5,-140.99 208,-150.99 211.5,-140.99 204.5,-140.99"/>
 </g>
 <!-- IamModule -->
 <g id="node3" class="node">
 <title>IamModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="111.82,-122 108.82,-126 87.82,-126 84.82,-122 30.18,-122 30.18,-86 111.82,-86 111.82,-122"/>
-<text text-anchor="middle" x="71" y="-99.8" font-family="Times,serif" font-size="14.00">IamModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="114.82,-122 111.82,-126 90.82,-126 87.82,-122 33.18,-122 33.18,-86 114.82,-86 114.82,-122"/>
+<text text-anchor="middle" x="74" y="-99.8" font-family="Times,serif" font-size="14.00">IamModule</text>
 </g>
 <!-- IamModule&#45;&gt;AppModule -->
 <g id="edge3" class="edge">
 <title>IamModule&#45;&gt;AppModule</title>
-<path fill="none" stroke="black" d="M71,-122.11C71,-141.34 71,-169 71,-169 71,-169 156.15,-169 156.15,-169"/>
-<polygon fill="black" stroke="black" points="156.15,-172.5 166.15,-169 156.15,-165.5 156.15,-172.5"/>
+<path fill="none" stroke="black" d="M74,-122.11C74,-141.34 74,-169 74,-169 74,-169 156.34,-169 156.34,-169"/>
+<polygon fill="black" stroke="black" points="156.34,-172.5 166.34,-169 156.34,-165.5 156.34,-172.5"/>
 </g>
 </g>
 </svg>

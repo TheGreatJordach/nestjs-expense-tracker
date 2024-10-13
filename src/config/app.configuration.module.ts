@@ -1,8 +1,10 @@
-import { Module } from "@nestjs/common";
+import { Module, ValidationPipe } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { EnvValidation } from "./env/validateEnvironment";
+
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { dataSourceFactory, getDatabaseConfig } from "./db/db.config";
+import { ValidateEnvVariables } from "./env/validate.env.variables";
+import { APP_PIPE } from "@nestjs/core";
 
 @Module({
   imports: [
@@ -10,7 +12,7 @@ import { dataSourceFactory, getDatabaseConfig } from "./db/db.config";
       isGlobal: true,
       envFilePath: ".env",
       cache: true,
-      validate: EnvValidation,
+      validate: ValidateEnvVariables.EnvValidation,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -18,6 +20,19 @@ import { dataSourceFactory, getDatabaseConfig } from "./db/db.config";
       useFactory: getDatabaseConfig,
       dataSourceFactory: dataSourceFactory,
     }),
+  ],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        forbidNonWhitelisted: true,
+        transformOptions: {
+          enableImplicitConversion: true,
+        },
+      }),
+    },
   ],
 })
 export class AppConfigurationModule {}

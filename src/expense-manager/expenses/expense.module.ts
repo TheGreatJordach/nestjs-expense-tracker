@@ -1,7 +1,8 @@
 import { Module } from "@nestjs/common";
-import { ExpenseManagerService } from "./expense.manager.service";
+import { ExpenseService } from "./expense.service";
 
 @Module({
-  providers: [ExpenseManagerService],
+  providers: [ExpenseService],
+  exports: [ExpenseService],
 })
 export class ExpenseModule {}
