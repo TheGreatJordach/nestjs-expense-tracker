@@ -11,7 +11,10 @@ import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { SignInDto } from "../dto/sign-in.dto";
 import { Response } from "express";
+import { Auth } from "../public-routes/auth.decorator";
+import { AuthType } from "../public-routes/auth-type.enum";
 
+@Auth(AuthType.Public)
 @ApiTags("Authentication")
 @Controller("auth")
 export class AuthController {

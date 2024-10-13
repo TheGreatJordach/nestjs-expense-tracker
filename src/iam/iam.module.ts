@@ -11,6 +11,7 @@ import jwtConfig from "../config/jwt/jwt.config";
 import { ConfigModule } from "@nestjs/config";
 import { AccessTokenGuard } from "./auth/guards/access.token.guard";
 import { APP_GUARD } from "@nestjs/core";
+import { AuthenticationGuard } from "./public-routes/guards/authentication-guard.service";
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { APP_GUARD } from "@nestjs/core";
     AuthService,
     UserService,
     JwtCookieProvider,
-    { provide: APP_GUARD, useClass: AccessTokenGuard },
+    { provide: APP_GUARD, useClass: AuthenticationGuard },
+    AccessTokenGuard,
   ],
   controllers: [AuthController],
 })
