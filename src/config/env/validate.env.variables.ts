@@ -79,6 +79,21 @@ export class ValidateEnvVariables {
   @IsSafeString()
   SWAGGER_VERSION: string;
 
+  //JWT
+  @IsNotEmpty()
+  @IsString()
+  @IsSafeString()
+  JWT_SECRET: string;
+  @IsNotEmpty()
+  @IsString()
+  JWT_TOKEN_AUDIENCE: string;
+  @IsNotEmpty()
+  @IsString()
+  JWT_TOKEN_ISSUER: string;
+  @IsPositive()
+  @IsInt()
+  JWT_TOKEN_TTL: number;
+
   // Custom validation method to check environment variables
   public static EnvValidation(options: Record<string, unknown>) {
     const validated = plainToInstance(ValidateEnvVariables, options, {
