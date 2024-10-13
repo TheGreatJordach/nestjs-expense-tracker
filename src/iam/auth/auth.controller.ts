@@ -1,8 +1,16 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Res,
+} from "@nestjs/common";
 import { CreateUserDto } from "../../expense-manager/users/dto/create.user.dto";
 import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { SignInDto } from "../dto/sign-in.dto";
+import { Response } from "express";
 
 @ApiTags("Authentication")
 @Controller("auth")
@@ -23,8 +31,16 @@ export class AuthController {
     type: CreateUserDto,
   })
   @Post("sign-up")
-  async signUp(@Body() createUserDto: CreateUserDto) {
-    return this.authService.registration(createUserDto);
+  async signUp(
+    @Body() createUserDto: CreateUserDto,
+    @Res({ passthrough: true }) response: Response
+  ) {
+    const accessToken = await this.authService.registration(createUserDto);
+    response.cookie("accessToken", accessToken, {
+      secure: true,
+      httpOnly: true,
+      sameSite: true,
+    });
   }
 
   @HttpCode(HttpStatus.OK)
@@ -41,7 +57,15 @@ export class AuthController {
     type: SignInDto,
   })
   @Post("sign-in")
-  async sinIn(@Body() signInDto: SignInDto) {
-    return this.authService.login(signInDto);
+  async sinIn(
+    @Body() signInDto: SignInDto,
+    @Res({ passthrough: true }) response: Response
+  ) {
+    const accessToken = await this.authService.login(signInDto);
+    response.cookie("accessToken", accessToken, {
+      secure: true,
+      httpOnly: true,
+      sameSite: true,
+    });
   }
 }

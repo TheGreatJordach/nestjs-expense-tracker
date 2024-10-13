@@ -1,15 +1,9 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { DataSource } from "typeorm";
 import { User } from "./entity/user.entity";
 import { CreateUserDto } from "./dto/create.user.dto";
 import { Email } from "../../common/types/email/email.type";
-import { validateEmail } from "../../common/types/email/email.util";
+import { isValidateEmail } from "../../common/types/email/email.util";
 import { UpdateUserDto } from "./dto/update.user.dto";
 
 @Injectable()
@@ -38,11 +32,16 @@ export class UserService {
 
           return await transactionEntityManager.save(validUser);
         } catch (error) {
-          console.error(
-            `Error occurred during user creation: ${error.message}`
+          // Handle any other unexpected errors
+          throw new HttpException(
+            {
+              error: "ServError",
+              data: undefined,
+              success: false,
+              message: `Failed to create new user, causes :${error.message} `,
+            },
+            HttpStatus.INTERNAL_SERVER_ERROR
           );
-
-          throw new InternalServerErrorException();
         }
       }
     );
@@ -64,7 +63,15 @@ export class UserService {
         return response > 0;
       } catch (error) {
         console.log(error.toString());
-        throw new InternalServerErrorException("Failed to check if user Exist");
+        throw new HttpException(
+          {
+            error: "ServError",
+            data: undefined,
+            success: false,
+            message: `Failed to check if user Exist :${error.toString()} `,
+          },
+          HttpStatus.CONFLICT
+        );
       }
     });
   }
@@ -83,10 +90,18 @@ export class UserService {
       // Validate and handle email using the validateEmail function
       try {
         // This will throw BadRequestException – if the Email format is invalid
-        validateEmail(identifier);
+        isValidateEmail(identifier);
         return this.findUserByEmail(identifier); // If valid, search for the user by email
       } catch (error) {
-        throw new BadRequestException(`Invalid identifier: ${error.message}`);
+        throw new HttpException(
+          {
+            error: "TypeError",
+            data: undefined,
+            success: false,
+            message: `Invalid identifier: ${error.message} `,
+          },
+          HttpStatus.BAD_REQUEST
+        );
       }
     }
   }
@@ -113,7 +128,15 @@ export class UserService {
 
   private resultHelper(user: User | null): User {
     if (!user) {
-      throw new NotFoundException(); // Handle user not found
+      throw new HttpException(
+        {
+          error: "TypeError",
+          data: undefined,
+          success: false,
+          message: `No user found `,
+        },
+        HttpStatus.NOT_FOUND
+      );
     }
     return user; // Return the user if found
   }
@@ -131,7 +154,15 @@ export class UserService {
       try {
         return await useTransaction.save(validUser);
       } catch (error) {
-        throw new BadRequestException();
+        throw new HttpException(
+          {
+            error: "ServError",
+            data: undefined,
+            success: false,
+            message: `Failed to update user with id: ${identifier}, caused by ${error.toString()} `,
+          },
+          HttpStatus.INTERNAL_SERVER_ERROR
+        );
       }
     });
   }

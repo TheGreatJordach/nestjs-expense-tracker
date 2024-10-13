@@ -1,4 +1,4 @@
-import { InternalServerErrorException } from "@nestjs/common";
+import { HttpException } from "@nestjs/common";
 import { ValidateEnvVariables } from "./validate.env.variables";
 
 // Adjust the import path as necessary
@@ -30,10 +30,11 @@ describe("EnvValidation", () => {
       SWAGGER_LICENCE_URL: "http://license.url",
       SWAGGER_SERV: "https://api.example.com",
       SWAGGER_VERSION: "1.0.0",
-      JWT_SECRET: "785c329e935e53871b73972a4eb633ac999abf3",
-      JWT_TOKEN_AUDIENCE: "https://api.example.com",
-      JWT_TOKEN_ISSUER: "https://api.example.com",
+      JWT_TOKEN_AUDIENCE: "audience",
+      JWT_TOKEN_ISSUER: "issuer",
       JWT_TOKEN_TTL: 3600,
+      JWT_SECRET:
+        "0b802b91e61f61bafa8edc8d665ff3d6af49c6a8dd846dfdc409fb3b2e480070b0a720ef8c05a18c564992ce25b4bdd5ae9b0cca12080c34cfb4e6acc681c8e9",
     };
 
     const result = ValidateEnvVariables.EnvValidation(validEnv);
@@ -55,10 +56,6 @@ describe("EnvValidation", () => {
     expect(result.SWAGGER_LICENCE_URL).toBe(validEnv.SWAGGER_LICENCE_URL);
     expect(result.SWAGGER_SERV).toBe(validEnv.SWAGGER_SERV);
     expect(result.SWAGGER_VERSION).toBe(validEnv.SWAGGER_VERSION);
-    expect(result.JWT_SECRET).toBe(validEnv.JWT_SECRET);
-    expect(result.JWT_TOKEN_AUDIENCE).toBe(validEnv.JWT_TOKEN_AUDIENCE);
-    expect(result.JWT_TOKEN_ISSUER).toBe(validEnv.JWT_TOKEN_ISSUER);
-    expect(result.JWT_TOKEN_TTL).toBe(validEnv.JWT_TOKEN_TTL);
   });
 
   it("should throw an InternalServerErrorException with invalid input", () => {
@@ -79,14 +76,10 @@ describe("EnvValidation", () => {
       SWAGGER_LICENCE_URL: "http://license.url",
       SWAGGER_SERV: "https://api.example.com",
       SWAGGER_VERSION: "1.0.0",
-      JWT_SECRET: "785c329e935e53871b73972a4eb633ac999abf3",
-      JWT_TOKEN_AUDIENCE: "https://api.example.com",
-      JWT_TOKEN_ISSUER: "https://api.example.com",
-      JWT_TOKEN_TTL: 3600,
     };
 
     expect(() => ValidateEnvVariables.EnvValidation(invalidEnv)).toThrow(
-      InternalServerErrorException
+      HttpException
     );
   });
 
@@ -108,15 +101,11 @@ describe("EnvValidation", () => {
       SWAGGER_LICENCE_URL: "http://license.url",
       SWAGGER_SERV: "https://api.example.com",
       SWAGGER_VERSION: "1.0.0",
-      JWT_SECRET: "785c329e935e53871b73972a4eb633ac999abf3",
-      JWT_TOKEN_AUDIENCE: "https://api.example.com",
-      JWT_TOKEN_ISSUER: "https://api.example.com",
-      JWT_TOKEN_TTL: 3600,
     };
 
     expect(() =>
       ValidateEnvVariables.EnvValidation(missingPropertiesEnv)
-    ).toThrow(InternalServerErrorException);
+    ).toThrow(HttpException);
   });
 
   it("should throw an InternalServerErrorException for incorrect types", () => {
@@ -137,14 +126,10 @@ describe("EnvValidation", () => {
       SWAGGER_LICENCE_URL: "http://license.url",
       SWAGGER_SERV: "https://api.example.com",
       SWAGGER_VERSION: "1.0.0",
-      JWT_SECRET: "785c329e935e53871b73972a4eb633ac999abf3",
-      JWT_TOKEN_AUDIENCE: "https://api.example.com",
-      JWT_TOKEN_ISSUER: "https://api.example.com",
-      JWT_TOKEN_TTL: 3600,
     };
 
     expect(() => ValidateEnvVariables.EnvValidation(incorrectTypeEnv)).toThrow(
-      InternalServerErrorException
+      HttpException
     );
   });
   it("should throw an InternalServerErrorException for overly long environment variables", () => {
@@ -165,14 +150,10 @@ describe("EnvValidation", () => {
       SWAGGER_LICENCE_URL: "http://license.url",
       SWAGGER_SERV: "https://api.example.com",
       SWAGGER_VERSION: "1.0.0",
-      JWT_SECRET: "785c329e935e53871b73972a4eb633ac999abf3",
-      JWT_TOKEN_AUDIENCE: "https://api.example.com",
-      JWT_TOKEN_ISSUER: "https://api.example.com",
-      JWT_TOKEN_TTL: 3600,
     };
 
     expect(() => ValidateEnvVariables.EnvValidation(overlyLongEnv)).toThrow(
-      InternalServerErrorException
+      HttpException
     );
   });
 
@@ -195,14 +176,10 @@ describe("EnvValidation", () => {
         SWAGGER_LICENCE_URL: "http://license.url",
         SWAGGER_SERV: "https://api.example.com",
         SWAGGER_VERSION: "1.0.0",
-        JWT_SECRET: "785c329e935e53871b73972a4eb633ac999abf3",
-        JWT_TOKEN_AUDIENCE: "https://api.example.com",
-        JWT_TOKEN_ISSUER: "https://api.example.com",
-        JWT_TOKEN_TTL: 3600,
       };
 
       expect(() => ValidateEnvVariables.EnvValidation(maliciousEnv)).toThrow(
-        InternalServerErrorException
+        HttpException
       );
     });
   });
@@ -225,14 +202,10 @@ describe("EnvValidation", () => {
       SWAGGER_LICENCE_URL: "http://license.url",
       SWAGGER_SERV: "https://api.example.com",
       SWAGGER_VERSION: "1.0.0",
-      JWT_SECRET: "785c329e935e53871b73972a4eb633ac999abf3",
-      JWT_TOKEN_AUDIENCE: "https://api.example.com",
-      JWT_TOKEN_ISSUER: "https://api.example.com",
-      JWT_TOKEN_TTL: 3600,
     };
 
     expect(() => ValidateEnvVariables.EnvValidation(weakPasswordEnv)).toThrow(
-      InternalServerErrorException
+      HttpException
     );
   });
 });

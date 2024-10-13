@@ -8,13 +8,14 @@ Content-Type: application/json
 }
 ##################################################################
 ### REGISTRATION
+# @no-cookie-jar
 POST http://localhost:3001/api/auth/sign-up
 Content-Type: application/json
 
 {
-  "firstName": "Samira",
+  "firstName": "Thaliane",
   "lastName": "MAKAYA",
-  "email": "sammakaya@me.com",
+  "email": "thali121e@me.com",
   "password": "Password@@2026"
 }
 

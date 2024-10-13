@@ -8,8 +8,9 @@ import {
   validateSync,
 } from "class-validator";
 import { plainToInstance } from "class-transformer";
-import { InternalServerErrorException } from "@nestjs/common";
+import { HttpException, HttpStatus } from "@nestjs/common";
 import { IsSafeString } from "../../common/decorators/is.safe.string.sec.decorator";
+import { IsStrongSecret } from "../../common/decorators/is.strong.secret.sec.decorator";
 
 export class ValidateEnvVariables {
   //DB
@@ -83,6 +84,9 @@ export class ValidateEnvVariables {
   @IsNotEmpty()
   @IsString()
   @IsSafeString()
+  @IsStrongSecret({
+    message: "The JWT secret must be a 64-byte hexadecimal string.",
+  })
   JWT_SECRET: string;
   @IsNotEmpty()
   @IsString()
@@ -104,8 +108,15 @@ export class ValidateEnvVariables {
     });
 
     if (errors.length > 0) {
-      throw new InternalServerErrorException(
-        `${errors.length} environments variables failed validation ${errors.toString()}`
+      // Handle any other unexpected errors
+      throw new HttpException(
+        {
+          error: "ServError",
+          data: undefined,
+          success: false,
+          message: `${errors.length} environment Variable Failed validation : causes :${errors}`,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
 
